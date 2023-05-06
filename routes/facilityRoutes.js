@@ -1,7 +1,7 @@
 import express from "express";
-import { getFacilities } from "../controllers/facilityController";
-import { getFacilityById } from "../controllers/facilityController";
-import { createFacility } from "../controllers/facilityController";
+import { getFacilities } from "../controllers/facilityController.js";
+import { getFacilityById } from "../controllers/facilityController.js";
+import { createFacility } from "../controllers/facilityController.js";
 
 export const facilityRouter = express.Router({ mergeParams: true });
 

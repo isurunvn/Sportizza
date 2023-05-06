@@ -9,7 +9,7 @@ export const getFacilities = async (req, res) =>{
 
     try{
         const facility = await prisma.facility.findMany({});
-        res.status(200).jason(facility);
+        res.status(200).json(facility);
     }catch(error){
         res.status(500).send(error.message);
         logger.error(NAME_SPACE , error.message);
