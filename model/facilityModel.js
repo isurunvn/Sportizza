@@ -1,7 +1,7 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
 const facilitySchema = Joi.object({
-    facilityId: Joi.number().required(),
+    facilityId: Joi.number(),
     facilityName: Joi.string().required(),
 });
 

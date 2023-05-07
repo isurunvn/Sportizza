@@ -11,6 +11,12 @@ datasource db {
 }
 
 model facility {
-  facilityId  Int @id @default(autoincrement())
+  facilityId   Int    @id @default(autoincrement())
   facilityName String @db.VarChar(250)
+  securityStatus facility_securityStatus? @default(active)
+}
+
+enum facility_securityStatus {
+  active
+  inactive
 }
