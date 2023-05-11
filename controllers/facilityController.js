@@ -37,6 +37,21 @@ export const getFacilityById = async (req, res) =>{
 
 }
 
+// export const getFacilitiesByName = async (req, res) =>{
+
+//     try{
+//         const name = req.params.facilityName;
+//         const filteredFacilities = await prisma.facility.filter( facility =>{
+//             facility.name.toLowerCase().includes(name.toLowerCase());
+//             res.json(filteredFacilities);
+//         })
+//     }catch(error){
+//         res.status(500).send(error.message);
+//         logger.error(NAME_SPACE, error.message);
+//     }
+
+// }
+
 export const createFacility = async (req, res) =>{
 
     const {

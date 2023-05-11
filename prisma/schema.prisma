@@ -11,12 +11,26 @@ datasource db {
 }
 
 model facility {
-  facilityId   Int    @id @default(autoincrement())
+  facilityId   Int @id @default(autoincrement())
   facilityName String @db.VarChar(250)
   securityStatus facility_securityStatus? @default(active)
 }
 
+model staff {
+  firstName String @db.VarChar(250)
+  lastName String @db.VarChar(250)
+  userName String @id @db.VarChar(250)
+  primaryContact String @db.VarChar(10) @unique
+  staffCategory String @db.VarChar(250)
+  securityStatus staff_securityStatus? @default(active)
+}
+
 enum facility_securityStatus {
+  active
+  inactive
+}
+
+enum staff_securityStatus {
   active
   inactive
 }
