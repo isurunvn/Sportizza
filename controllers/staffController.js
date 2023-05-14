@@ -20,7 +20,7 @@ export const getStaff = async (req, res) => {
     }
 };
 
-export const getStaffByUserName = async (req, res) => {
+export const getStaffByUserId = async (req, res) => {
 
     try{
         const staff = await prisma.staff.findMany({
@@ -34,6 +34,32 @@ export const getStaffByUserName = async (req, res) => {
         res.status(500).send(error.message);
         logger.error(NAME_SPACE,  error.message);
     }
+
+}
+
+export const getStaffByAnyTerm = async (req, res) => {
+
+    try {
+        const searchTerm = req.query.q;
+
+        const filteredStaff = await prisma.facility.findMany({
+          where: {
+            OR: [
+  
+              { firstName: { contains: searchTerm } },
+              { lastName: { contains: searchTerm } },
+              { userName: { contains: searchTerm } },
+              { primaryContact: { contains: searchTerm } },
+              { staffCategory: { contains: searchTerm } },
+              
+            ],
+          },
+        });
+        res.status(200).send(filteredStaff);
+      } catch (error) {
+        res.status(500).send(error.message);
+        logger.error(NAME_SPACE, error.message);
+      }
 
 }
 

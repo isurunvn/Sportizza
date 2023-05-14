@@ -40,13 +40,13 @@ export const getFacilityById = async (req, res) =>{
 export const getFacilitiesByAnyTerm = async (req, res) => {
     try {
       const searchTerm = req.query.q;
-      const facilityId = Number.isNaN(parseInt(searchTerm)) ? 0 : parseInt(searchTerm);
+      const parsedSearchTerm = parseInt(searchTerm);
       const filteredFacilities = await prisma.facility.findMany({
         where: {
           OR: [
 
             { facilityName: { contains: searchTerm } },
-            { facilityId: { equals: facilityId } },
+            { facilityId: { equals: parsedSearchTerm } },
             
           ],
         },
