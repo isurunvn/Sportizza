@@ -37,20 +37,26 @@ export const getFacilityById = async (req, res) =>{
 
 }
 
-// export const getFacilitiesByName = async (req, res) =>{
+export const getFacilitiesByAnyTerm = async (req, res) => {
+    try {
+      const searchTerm = req.query.q;
+      const facilityId = Number.isNaN(parseInt(searchTerm)) ? 0 : parseInt(searchTerm);
+      const filteredFacilities = await prisma.facility.findMany({
+        where: {
+          OR: [
 
-//     try{
-//         const name = req.params.facilityName;
-//         const filteredFacilities = await prisma.facility.filter( facility =>{
-//             facility.name.toLowerCase().includes(name.toLowerCase());
-//             res.json(filteredFacilities);
-//         })
-//     }catch(error){
-//         res.status(500).send(error.message);
-//         logger.error(NAME_SPACE, error.message);
-//     }
-
-// }
+            { facilityName: { contains: searchTerm } },
+            { facilityId: { equals: facilityId } },
+            
+          ],
+        },
+      });
+      res.status(200).send(filteredFacilities);
+    } catch (error) {
+      res.status(500).send(error.message);
+      logger.error(NAME_SPACE, error.message);
+    }
+  };
 
 export const createFacility = async (req, res) =>{
 

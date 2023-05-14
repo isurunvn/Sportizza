@@ -1,7 +1,7 @@
 import express from "express";
 import { getFacilities } from "../controllers/facilityController.js";
 import { getFacilityById } from "../controllers/facilityController.js";
-// import { getFacilitiesByName } from "../controllers/facilityController.js";
+import { getFacilitiesByAnyTerm } from "../controllers/facilityController.js";
 import { createFacility } from "../controllers/facilityController.js";
 import { updateFacility } from "../controllers/facilityController.js";
 import { removeFacility } from "../controllers/facilityController.js";
@@ -12,7 +12,7 @@ facilityRouter.route("/").get(getFacilities);
 
 facilityRouter.route("/:id").get(getFacilityById);
 
-// facilityRouter.route("/search").get(getFacilitiesByName);
+facilityRouter.route("/search").get(getFacilitiesByAnyTerm); 
 
 facilityRouter.route("/").post(createFacility);
 
