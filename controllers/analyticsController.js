@@ -1,98 +1,140 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import logger from '../utils/logger.js';
 
 const prisma = new PrismaClient();
 const NAME_SPACE = 'Analytics';
 
 export const facilityAnalytics = async (req, res) =>{
-    
-    const {range} = req.params.range;
+  
+  try {
+    const { months } = req.query;
 
-    let where;
-    const today  = new Date();
+    console.log(months);
 
-    switch(range){
-
-        case '3': 
-        where = {
-            AND: [
-                { createdAt: { gte: new Date(today.getFullYear(), today.getMonth() - 3, 1) } },
-                { createdAt: { lt: new Date(today.getFullYear(), today.getMonth() + 1, 1) } },
-              ],
-        };
-        break;
-        case '6':
-        where = {
-            AND: [
-            { createdAt: { gte: new Date(today.getFullYear(), today.getMonth() - 6, 1) } },
-            { createdAt: { lt: new Date(today.getFullYear(), today.getMonth() + 1, 1) } },
-            ],
-        };
-      break;
-        case '12':
-        where = {
-            AND: [
-            { createdAt: { gte: new Date(today.getFullYear() - 1, today.getMonth() + 1, 1) } },
-            { createdAt: { lt: new Date(today.getFullYear(), today.getMonth() + 1, 1) } },
-            ],
-        };
-      break;
-      
-    }
-
-    try {
-        const count = await prisma.facility.count({ where });
-        res.json({ count });
-      } catch (error) {
-        console.error(error);
-        res.status(500).send('Error retrieving facility count.');
+    const facilitiesByName = await prisma.user.groupBy({
+      by: ['facilityName'],
+      _count: {
+        facilityName: true
+      },
+      where: {
+        createdAt: {
+          gte: Prisma.dateTime.add(new Date(), { months: -months })
+        }
       }
+    });
 
-}
-
-
-export const staffAnalytics = async (req, res) =>{
-    
-  const {range} = req.params.range;
-
-  let where;
-  const today  = new Date();
-
-  switch(range){
-
-      case '3': 
-      where = {
-          AND: [
-              { createdAt: { gte: new Date(today.getFullYear(), today.getMonth() - 3, 1) } },
-              { createdAt: { lt: new Date(today.getFullYear(), today.getMonth() + 1, 1) } },
-            ],
-      };
-      break;
-      case '6':
-      where = {
-          AND: [
-          { createdAt: { gte: new Date(today.getFullYear(), today.getMonth() - 6, 1) } },
-          { createdAt: { lt: new Date(today.getFullYear(), today.getMonth() + 1, 1) } },
-          ],
-      };
-    break;
-      case '12':
-      where = {
-          AND: [
-          { createdAt: { gte: new Date(today.getFullYear() - 1, today.getMonth() + 1, 1) } },
-          { createdAt: { lt: new Date(today.getFullYear(), today.getMonth() + 1, 1) } },
-          ],
-      };
-    break;
-    
+    res.json(facilitiesByName);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 
-  try {
-      const count = await prisma.facility.count({ where });
-      res.json({ count });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Error retrieving staff count.');
-    }
+};
 
-}
+export const staffAnalytics = async (req, res) =>{
+
+  try {
+    const { months } = req.query;
+
+    console.log(months);
+
+    const staffByCategory = await prisma.user.groupBy({
+      by: ['staffCategory'],
+      _count: {
+        staffCategory: true
+      },
+      where: {
+        createdAt: {
+          gte: Prisma.dateTime.add(new Date(), { months: -months })
+        }
+      }
+    });
+
+    res.json(staffByCategory);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+    
+};
+
+export const paymentAnalytics = async (req, res) => {
+
+  try {
+    const { months } = req.query;
+
+    console.log(months);
+
+    const paymentByMethod = await prisma.user.groupBy({
+      by: ['paymentMethod'],
+      _count: {
+        paymentMethod: true
+      },
+      where: {
+        createdAt: {
+          gte: Prisma.dateTime.add(new Date(), { months: -months })
+        }
+      }
+    });
+
+    res.json(paymentByMethod);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+
+};
+
+export const bookingAnalytics = async (req, res) => {
+
+  try {
+    const { months } = req.query;
+
+    console.log(months);
+
+    const bookingBycategory = await prisma.user.groupBy({
+      by: ['bookingCategory'],
+      _count: {
+        bookingCategory: true
+      },
+      where: {
+        createdAt: {
+          gte: Prisma.dateTime.add(new Date(), { months: -months })
+        }
+      }
+    });
+
+    res.json(bookingBycategory);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+
+};
+
+export const timeSlotsAnalytics = async (req, res) => {
+
+  try {
+    const { months } = req.query;
+
+    console.log(months);
+
+    const timeSlotByPeriod = await prisma.user.groupBy({
+      by: ['timePeriod'],
+      _count: {
+        timePeriod: true
+      },
+      where: {
+        createdAt: {
+          gte: Prisma.dateTime.add(new Date(), { months: -months })
+        }
+      }
+    });
+
+    res.json(timeSlotByPeriod);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+
+};

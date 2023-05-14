@@ -51,10 +51,12 @@ export const getFacilitiesByAnyTerm = async (req, res) => {
           ],
         },
       });
+      
       res.status(200).send(filteredFacilities);
     } catch (error) {
       res.status(500).send(error.message);
       logger.error(NAME_SPACE, error.message);
+      console.log(error);
     }
   };
 
