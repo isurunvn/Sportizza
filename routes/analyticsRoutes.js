@@ -7,12 +7,12 @@ import { timeSlotsAnalytics } from '../controllers/analyticsController.js';
 
 export const analyticsRouter = express.Router({ mergeParams: true });
 
-analyticsRouter.route("/facilities/analytics").get(facilityAnalytics);
+analyticsRouter.route("/facilities").get(facilityAnalytics);
 
-analyticsRouter.route("/staff/analytics").get(staffAnalytics);
+analyticsRouter.route("/staff").get(staffAnalytics);
 
-analyticsRouter.route("/payment/analytics").get(paymentAnalytics);
+analyticsRouter.route("/payment").get(paymentAnalytics);
 
-analyticsRouter.route("/booking/analytics").get(bookingAnalytics);
+analyticsRouter.route("/booking").get(bookingAnalytics);
 
-analyticsRouter.route("/timeSlots/analytics").get(timeSlotsAnalytics);
+analyticsRouter.route("/timeSlots").get(timeSlotsAnalytics);

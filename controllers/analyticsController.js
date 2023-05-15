@@ -34,11 +34,11 @@ export const facilityAnalytics = async (req, res) =>{
 export const staffAnalytics = async (req, res) =>{
 
   try {
-    const { months } = req.query;
+    const { months } = 3;
 
     console.log(months);
 
-    const staffByCategory = await prisma.user.groupBy({
+    const staffByCategory = await prisma.staff.groupBy({
       by: ['staffCategory'],
       _count: {
         staffCategory: true
