@@ -21,32 +21,17 @@ export const getFacilities = async (req, res) =>{
 
 };
 
-export const getFacilityById = async (req, res) =>{
-
-    try{
-        const facility = await prisma.facility.findMany({
-            where: {
-                facilityId: parseInt(req.params.id)
-            }
-        });
-        res.status(200).send(facility);
-    }catch(error){
-        res.status(500).send(error.message);
-        logger.error(NAME_SPACE, error.message);
-    }
-
-}
 
 export const getFacilitiesByAnyTerm = async (req, res) => {
     try {
       const searchTerm = req.query.q;
-      const parsedSearchTerm = parseInt(searchTerm);
+      console.log(searchTerm);
+      
       const filteredFacilities = await prisma.facility.findMany({
         where: {
           OR: [
 
-            { facilityName: { contains: searchTerm } },
-            { facilityId: { equals: parsedSearchTerm } },
+            { facilityName: { contains: searchTerm } } 
             
           ],
         },

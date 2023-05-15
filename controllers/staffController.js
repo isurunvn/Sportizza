@@ -20,29 +20,13 @@ export const getStaff = async (req, res) => {
     }
 };
 
-export const getStaffByUserId = async (req, res) => {
-
-    try{
-        const staff = await prisma.staff.findMany({
-            where:{
-                userName: req.params.id
-            }
-        });
-        res.status(200).send(staff);
-        
-    }catch(error){
-        res.status(500).send(error.message);
-        logger.error(NAME_SPACE,  error.message);
-    }
-
-}
 
 export const getStaffByAnyTerm = async (req, res) => {
 
     try {
         const searchTerm = req.query.q;
 
-        const filteredStaff = await prisma.facility.findMany({
+        const filteredStaff = await prisma.staff.findMany({
           where: {
             OR: [
   
