@@ -11,7 +11,7 @@ export const facilityAnalytics = async (req, res) =>{
 
     console.log(months);
 
-    const facilitiesByName = await prisma.user.groupBy({
+    const facilitiesByName = await prisma.facility.groupBy({
       by: ['facilityName'],
       _count: {
         facilityName: true
@@ -65,7 +65,7 @@ export const paymentAnalytics = async (req, res) => {
 
     console.log(months);
 
-    const paymentByMethod = await prisma.user.groupBy({
+    const paymentByMethod = await prisma.payment.groupBy({
       by: ['paymentMethod'],
       _count: {
         paymentMethod: true
@@ -92,7 +92,7 @@ export const bookingAnalytics = async (req, res) => {
 
     console.log(months);
 
-    const bookingBycategory = await prisma.user.groupBy({
+    const bookingBycategory = await prisma.booking.groupBy({
       by: ['bookingCategory'],
       _count: {
         bookingCategory: true
@@ -119,7 +119,7 @@ export const timeSlotsAnalytics = async (req, res) => {
 
     console.log(months);
 
-    const timeSlotByPeriod = await prisma.user.groupBy({
+    const timeSlotByPeriod = await prisma.timeSlot.groupBy({
       by: ['timePeriod'],
       _count: {
         timePeriod: true
