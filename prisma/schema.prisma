@@ -14,6 +14,8 @@ model facility {
   facilityId   Int @id @default(autoincrement())
   facilityName String @db.VarChar(250)
   securityStatus facility_securityStatus? @default(active)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model staff {
@@ -23,6 +25,8 @@ model staff {
   primaryContact String @db.VarChar(10) @unique
   staffCategory String @db.VarChar(250)
   securityStatus staff_securityStatus? @default(active)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum facility_securityStatus {

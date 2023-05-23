@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import logger from '../utils/logger.js';
 
 const prisma = new PrismaClient();
 const NAME_SPACE = 'Analytics';
@@ -11,7 +10,7 @@ export const facilityAnalytics = async (req, res) =>{
 
     console.log(months);
 
-    const facilitiesByName = await prisma.facility.groupBy({
+    const facilitiesByName = await prisma.staff.groupBy({
       by: ['facilityName'],
       _count: {
         facilityName: true
@@ -28,13 +27,13 @@ export const facilityAnalytics = async (req, res) =>{
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
-
+    
 };
 
 export const staffAnalytics = async (req, res) =>{
 
   try {
-    const { months } = 3;
+    const { months } = req.query;
 
     console.log(months);
 
