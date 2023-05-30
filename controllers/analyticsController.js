@@ -6,18 +6,29 @@ const NAME_SPACE = 'Analytics';
 export const facilityAnalytics = async (req, res) =>{
   
   try {
+    const currentDate = new Date();
     const { months } = req.query;
+    
+    const currentMonth = currentDate.getMonth();
+
+    const monthsAgo = currentMonth - months;
+    currentDate.setMonth(monthsAgo);
+
 
     console.log(months);
 
-    const facilitiesByName = await prisma.staff.groupBy({
+    const facilitiesByName = await prisma.facility.groupBy({
       by: ['facilityName'],
-      _count: {
-        facilityName: true
+      select: {
+        facilityName: true,
+        _count: {
+          facilityName: true
+        }
       },
       where: {
         createdAt: {
-          gte: Prisma.dateTime.add(new Date(), { months: -months })
+          gte: currentDate,
+          lte: new Date()
         }
       }
     });
