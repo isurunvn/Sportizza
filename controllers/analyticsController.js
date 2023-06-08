@@ -8,27 +8,24 @@ export const facilityAnalytics = async (req, res) =>{
   try {
     const currentDate = new Date();
     const { months } = req.query;
-    
-    const currentMonth = currentDate.getMonth();
+    const monthsAgo = new Date();
 
-    const monthsAgo = currentMonth - months;
-    currentDate.setMonth(monthsAgo);
-
-
-    console.log(months);
+    monthsAgo.setMonth(monthsAgo.getMonth() - months);
 
     const facilitiesByName = await prisma.facility.groupBy({
-      by: ['facilityName'],
       select: {
         facilityName: true,
         _count: {
-          facilityName: true
+          select: {
+            facilityName: true
+          }
         }
       },
+      by: ['facilityName'],
       where: {
         createdAt: {
-          gte: currentDate,
-          lte: new Date()
+          gte: monthsAgo,
+          lte: currentDate,
         }
       }
     });
@@ -44,18 +41,26 @@ export const facilityAnalytics = async (req, res) =>{
 export const staffAnalytics = async (req, res) =>{
 
   try {
+    const currentDate = new Date();
     const { months } = req.query;
+    const monthsAgo = new Date();
 
-    console.log(months);
+    monthsAgo.setMonth(monthsAgo.getMonth() - months);
 
     const staffByCategory = await prisma.staff.groupBy({
-      by: ['staffCategory'],
-      _count: {
-        staffCategory: true
+      select: {
+        staffCategory: true,
+        _count: {
+          select: {
+            userName: true
+          }
+        }
       },
+      by: ['staffCategory'],
       where: {
         createdAt: {
-          gte: Prisma.dateTime.add(new Date(), { months: -months })
+          gte: monthsAgo,
+          lte: currentDate,
         }
       }
     });
@@ -71,18 +76,26 @@ export const staffAnalytics = async (req, res) =>{
 export const paymentAnalytics = async (req, res) => {
 
   try {
+    const currentDate = new Date();
     const { months } = req.query;
+    const monthsAgo = new Date();
 
-    console.log(months);
+    monthsAgo.setMonth(monthsAgo.getMonth() - months);
 
-    const paymentByMethod = await prisma.payment.groupBy({
-      by: ['paymentMethod'],
-      _count: {
-        paymentMethod: true
+    const paymentByMethod = await prisma.booking.groupBy({
+      select: {
+        payment_method: true,
+        _count: {
+          select: {
+            payment_method: true
+          }
+        }
       },
+      by: ['payment_method'],
       where: {
         createdAt: {
-          gte: Prisma.dateTime.add(new Date(), { months: -months })
+          gte: monthsAgo,
+          lte: currentDate,
         }
       }
     });
@@ -98,23 +111,32 @@ export const paymentAnalytics = async (req, res) => {
 export const bookingAnalytics = async (req, res) => {
 
   try {
+    const currentDate = new Date();
     const { months } = req.query;
+    const monthsAgo = new Date();
 
-    console.log(months);
+    monthsAgo.setMonth(monthsAgo.getMonth() - months);
 
-    const bookingBycategory = await prisma.booking.groupBy({
-      by: ['bookingCategory'],
-      _count: {
-        bookingCategory: true
+    const bookingsByMonth = await prisma.booking.groupBy({
+
+      select: {
+        bookedMonth: true,
+        _count: {
+          select: {
+            bookedMonth: true
+          }
+        }
       },
+      by: ['bookedMonth'],
       where: {
         createdAt: {
-          gte: Prisma.dateTime.add(new Date(), { months: -months })
+          gte: monthsAgo,
+          lte: currentDate,
         }
       }
     });
 
-    res.json(bookingBycategory);
+    res.json(bookingsByMonth);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -125,23 +147,31 @@ export const bookingAnalytics = async (req, res) => {
 export const timeSlotsAnalytics = async (req, res) => {
 
   try {
+    const currentDate = new Date();
     const { months } = req.query;
+    const monthsAgo = new Date();
 
-    console.log(months);
+    monthsAgo.setMonth(monthsAgo.getMonth() - months);
 
-    const timeSlotByPeriod = await prisma.timeSlot.groupBy({
-      by: ['timePeriod'],
-      _count: {
-        timePeriod: true
+    const countOfTimeSlots = await prisma.time_slot.groupBy({
+      select: {
+        start_time: true,
+        _count: {
+          select: {
+            start_time: true
+          }
+        }
       },
+      by: ['start_time'],
       where: {
         createdAt: {
-          gte: Prisma.dateTime.add(new Date(), { months: -months })
+          gte: monthsAgo,
+          lte: currentDate,
         }
       }
     });
 
-    res.json(timeSlotByPeriod);
+    res.json(countOfTimeSlots);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
